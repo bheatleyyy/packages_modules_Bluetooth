@@ -66,16 +66,9 @@ struct Controller::impl {
 
     hci_->EnqueueCommand(ReadBufferSizeBuilder::Create(),
                          handler->BindOnceOn(this, &Controller::impl::read_buffer_size_complete_handler));
-
-    if (is_supported(OpCode::LE_READ_BUFFER_SIZE_V2)) {
-      hci_->EnqueueCommand(
-          LeReadBufferSizeV2Builder::Create(),
-          handler->BindOnceOn(this, &Controller::impl::le_read_buffer_size_v2_handler));
-    } else {
-      hci_->EnqueueCommand(
-          LeReadBufferSizeV1Builder::Create(),
-          handler->BindOnceOn(this, &Controller::impl::le_read_buffer_size_handler));
-    }
+    
+    hci_->EnqueueCommand(LeReadBufferSizeV1Builder::Create(),
+                         handler->BindOnceOn(this, &Controller::impl::le_read_buffer_size_handler));
 
     hci_->EnqueueCommand(
         LeReadFilterAcceptListSizeBuilder::Create(),
